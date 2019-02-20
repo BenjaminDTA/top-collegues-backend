@@ -32,9 +32,9 @@ public class CollegueCtrl {
     	for(Collegue c : collegues) {
     		if(c.getPseudo().equals(pseudo)) {
     			if(action.get("action").equals("AIMER")) {
-    				c.setScore(+1);
+    				c.setScore(+10);
     			}else if(action.get("action").equals("DETESTER")) {
-    				c.setScore(-1);
+    				c.setScore(-5);
     			}this.collegueRepo.save(c); 
     			break;
     		}
