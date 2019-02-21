@@ -1,5 +1,6 @@
 package dev.top.controller;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,24 +26,31 @@ public class CollegueCtrl {
 
     @GetMapping
     public List<Collegue> findAll() {
-        return this.collegueRepo.findAll();
+        List<Collegue> listeCollegues = this.collegueRepo.findAll();
+        listeCollegues.sort(Comparator.comparing(Collegue::getScore));
+		return listeCollegues;
     }
     
     @PatchMapping(value= "{pseudo}")
-    public void updateScore(@PathVariable String pseudo, @RequestBody Map<String, String> action) {
+    public Collegue updateScore(@PathVariable String pseudo, @RequestBody Map<String, String> action) {
     	List<Collegue> collegues = findAll();
+    	
     	for(Collegue c : collegues) {
     		if(c.getPseudo().equals(pseudo)) {
     			if(action.get("action").equals("AIMER")) {
     				c.setScore(+10);
     			}else if(action.get("action").equals("DETESTER")) {
     				c.setScore(-5);
-    			}this.collegueRepo.save(c); 
-    			break;
+    			}
+    			
+    			this.collegueRepo.save(c);
+    			return c;
     		}
     	
     		
     	}
+    	
+    	return null;
     }
  
 }
