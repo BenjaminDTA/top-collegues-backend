@@ -1,15 +1,12 @@
 package dev.top.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 
-@Entity
 public class Personne {
-	@Column
+	
 	private String matricule;
-	@Column
+	
 	private String pseudo;
-	@Column
+	
 	private String url;
 
 	public Personne() {

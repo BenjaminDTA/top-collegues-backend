@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import dev.top.entities.Collegue;
+import dev.top.entities.Personne;
 import dev.top.repos.CollegueRepo;
 
 @RestController()
@@ -27,11 +26,12 @@ public class CollegueCtrl {
 
 	@Autowired
 	private CollegueRepo collegueRepo;
-
+	
 	@GetMapping
 	public List<Collegue> findAll() {
 		List<Collegue> listeCollegues = this.collegueRepo.findAll();
 		listeCollegues.sort(Comparator.comparing(Collegue::getPseudo));
+		//System.out.print(listeCollegues.get(0).getPhoto());
 		return listeCollegues;
 	}
 		
@@ -55,17 +55,23 @@ public class CollegueCtrl {
 
 		return null;
 	}
-	@PostMapping(value = "{Personne}")
+	@PostMapping
 	public void postCollegue(@RequestBody Map<String, String> action) {
-		
-		
-		
-		
-		
+		final String url = "https://tommy-sjava.cleverapps.io/collegues?matricule=" + action.get("matricule");
 		RestTemplate restTemplate = new RestTemplate();
-		String getUrl = "https://tommy-sjava.cleverapps.io/collegues";
-		ObjectMapper mapper = new ObjectMapper();
+		Collegue[] listeCollegue = restTemplate.getForObject(url, Collegue[].class);
 		
+		
+		if(listeCollegue.length == 0) {
+			System.out.println("Erreur à retourner");
+		} else {
+			Collegue collegueTrouvee = listeCollegue[0]; 
+			
+			Collegue collegue = new Collegue(collegueTrouvee.getPseudo(), 0, collegueTrouvee.getPhotoUrl());
+			System.out.println("Je crée bien un rappel");
+			
+			this.collegueRepo.save(collegue); //Enregistre le résultat du GetApi en BDD
+			
+		}
 	}
-	
 }
