@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import dev.top.entities.Collegue;
+import dev.top.entities.ColleguesApi;
 import dev.top.entities.Personne;
 import dev.top.repos.CollegueRepo;
 
@@ -26,15 +27,18 @@ public class CollegueCtrl {
 
 	@Autowired
 	private CollegueRepo collegueRepo;
-	
+
 	@GetMapping
 	public List<Collegue> findAll() {
 		List<Collegue> listeCollegues = this.collegueRepo.findAll();
-		listeCollegues.sort(Comparator.comparing(Collegue::getPseudo));
-		//System.out.print(listeCollegues.get(0).getPhoto());
+		for (Collegue c : listeCollegues) {
+			System.out.println(c.toString());
+		}
+		// listeCollegues.sort(Comparator.comparing(Collegue::getPseudo));
+		// System.out.print(listeCollegues.get(0).getPhoto());
 		return listeCollegues;
 	}
-		
+
 	@PatchMapping(value = "{pseudo}")
 	public Collegue updateScore(@PathVariable String pseudo, @RequestBody Map<String, String> action) {
 		List<Collegue> collegues = findAll();
@@ -55,23 +59,23 @@ public class CollegueCtrl {
 
 		return null;
 	}
+
 	@PostMapping
 	public void postCollegue(@RequestBody Map<String, String> action) {
 		final String url = "https://tommy-sjava.cleverapps.io/collegues?matricule=" + action.get("matricule");
 		RestTemplate restTemplate = new RestTemplate();
-		Collegue[] listeCollegue = restTemplate.getForObject(url, Collegue[].class);
-		
-		
-		if(listeCollegue.length == 0) {
+		ColleguesApi[] listeCollegue = restTemplate.getForObject(url, ColleguesApi[].class);
+
+		if (listeCollegue.length == 0) {
 			System.out.println("Erreur à retourner");
 		} else {
-			Collegue collegueTrouvee = listeCollegue[0]; 
-			
-			Collegue collegue = new Collegue(collegueTrouvee.getPseudo(), 0, collegueTrouvee.getPhotoUrl());
-			System.out.println("Je crée bien un rappel");
-			
-			this.collegueRepo.save(collegue); //Enregistre le résultat du GetApi en BDD
-			
+
+			ColleguesApi collegueTrouvee = listeCollegue[0];
+			System.out.println("eee"+collegueTrouvee.getPhoto());
+			Collegue collegue = new Collegue(collegueTrouvee.getPrenom(), 0, collegueTrouvee.getPhoto());
+
+			this.collegueRepo.save(collegue); // Enregistre le résultat du GetApi en BDD
+
 		}
 	}
 }

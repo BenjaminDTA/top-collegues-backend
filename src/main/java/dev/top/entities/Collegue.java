@@ -15,21 +15,12 @@ public class Collegue {
 	@Column
 	private String pseudo;
 	@Column
-	private String matricule;
-
-	@Column
 	private Integer score;
 	@Column
 	private String photoUrl;
-	@Column
-	private String nom;
-	@Column
-	private String prenom;
-	@Column
-	private String Email;
-	@Column
-	private String adresse;
-
+	
+	
+	
 	public Collegue() {
 		super();
 	}
@@ -39,38 +30,6 @@ public class Collegue {
 		this.pseudo = pseudo;
 		this.score = score;
 		this.photoUrl = photoUrl;
-	}
-
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public String getPrenom() {
-		return prenom;
-	}
-
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
-
-	public String getEmail() {
-		return Email;
-	}
-
-	public void setEmail(String email) {
-		Email = email;
-	}
-
-	public String getAdresse() {
-		return adresse;
-	}
-
-	public void setAdresse(String adresse) {
-		this.adresse = adresse;
 	}
 
 	public String getPseudo() {
@@ -96,13 +55,7 @@ public class Collegue {
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
 	}
-	public String getMatricule() {
-		return matricule;
-	}
-
-	public void setMatricule(String matricule) {
-		this.matricule = matricule;
-	}
-
+	
+	
 
 }
